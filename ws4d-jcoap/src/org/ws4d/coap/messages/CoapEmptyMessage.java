@@ -13,7 +13,7 @@ public class CoapEmptyMessage extends AbstractCoapMessage {
 	public CoapEmptyMessage(byte[] bytes, int length, int offset){
 		serialize(bytes, length, offset);
 		/* check if response code is valid, this function throws an error in case of an invalid argument */
-		if (this.messageCodeValue != 0){
+		if (this.code != 0){
 			throw new IllegalArgumentException("Not an empty CoAP message.");
 		}
 		
@@ -25,7 +25,7 @@ public class CoapEmptyMessage extends AbstractCoapMessage {
 	public CoapEmptyMessage(CoapPacketType packetType, int messageId) {
 		this.version = 1;
 		this.packetType = packetType;
-		this.messageCodeValue = 0;
+		this.code = 0;
 		this.messageId = messageId;		
 	}
 

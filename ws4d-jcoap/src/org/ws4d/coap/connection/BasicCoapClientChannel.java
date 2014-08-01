@@ -75,43 +75,43 @@ public class BasicCoapClientChannel extends BasicCoapChannel implements CoapClie
 		} 
 		
 		/* check for blockwise transfer */
-		CoapBlockOption block2 = message.getBlock2();
-		if (blockContext == null && block2 != null){
-			/* initiate blockwise transfer */
-			blockContext = new ClientBlockContext(block2, maxReceiveBlocksize);
-			blockContext.setFirstRequest(lastRequest);
-			blockContext.setFirstResponse((CoapResponse) message);
-		}
-		
-		if (blockContext!= null){
-			/*blocking option*/
-			if (!blockContext.addBlock(message, block2)){
-				/*this was not a correct block*/
-				/* TODO: implement either a RST or ignore this packet */
-			}
-			
-			if (!blockContext.isFinished()){
-				/* TODO: implement a counter to avoid an infinity req/resp loop:
-				 *  		if the same block is received more than x times -> rst the connection 
-				 *  implement maxPayloadSize to avoid an infinity payload */
-				CoapBlockOption newBlock = blockContext.getNextBlock();
-				if (lastRequest == null){
-					/*TODO: this should never happen*/
-					System.out.println("ERROR: client channel: lastRequest == null");
-				} else {
-					/* create a new request for the next block */
-					BasicCoapRequest request =  new BasicCoapRequest(lastRequest.getPacketType(), lastRequest.getRequestCode(), channelManager.getNewMessageID());
-					request.copyHeaderOptions((BasicCoapRequest) blockContext.getFirstRequest()); 
-					request.setBlock2(newBlock);
-					sendMessage(request);
-				}
-				/* TODO: implement handler, inform the client that a block (but not the complete message) was received*/
-				return;
-			} 
-			/* blockwise transfer finished */
-			message.setPayload(blockContext.getPayload());
-			/* TODO: give the payload separately and leave the original message as they is*/
-		} 		
+//		CoapBlockOption block2 = message.getBlock2();
+//		if (blockContext == null && block2 != null){
+//			/* initiate blockwise transfer */
+//			blockContext = new ClientBlockContext(block2, maxReceiveBlocksize);
+//			blockContext.setFirstRequest(lastRequest);
+//			blockContext.setFirstResponse((CoapResponse) message);
+//		}
+//		
+//		if (blockContext!= null){
+//			/*blocking option*/
+//			if (!blockContext.addBlock(message, block2)){
+//				/*this was not a correct block*/
+//				/* TODO: implement either a RST or ignore this packet */
+//			}
+//			
+//			if (!blockContext.isFinished()){
+//				/* TODO: implement a counter to avoid an infinity req/resp loop:
+//				 *  		if the same block is received more than x times -> rst the connection 
+//				 *  implement maxPayloadSize to avoid an infinity payload */
+//				CoapBlockOption newBlock = blockContext.getNextBlock();
+//				if (lastRequest == null){
+//					/*TODO: this should never happen*/
+//					System.out.println("ERROR: client channel: lastRequest == null");
+//				} else {
+//					/* create a new request for the next block */
+//					BasicCoapRequest request =  new BasicCoapRequest(lastRequest.getPacketType(), lastRequest.getRequestCode(), channelManager.getNewMessageID());
+//					request.copyHeaderOptions((BasicCoapRequest) blockContext.getFirstRequest()); 
+//					request.setBlock2(newBlock);
+//					sendMessage(request);
+//				}
+//				/* TODO: implement handler, inform the client that a block (but not the complete message) was received*/
+//				return;
+//			} 
+//			/* blockwise transfer finished */
+//			message.setPayload(blockContext.getPayload());
+//			/* TODO: give the payload separately and leave the original message as they is*/
+//		} 		
 
 		/* normal or separate response */
 		client.onResponse(this, (BasicCoapResponse) message);

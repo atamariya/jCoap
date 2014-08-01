@@ -64,17 +64,17 @@ public interface CoapMessage {
 //
 //    public void setRequestUri(URI uri); //TODO:allow this method only for Clients, Define Token Type
     
-    CoapBlockOption getBlock1();
-    
-    void setBlock1(CoapBlockOption blockOption);
-    
-    CoapBlockOption getBlock2();
-    
-    void setBlock2(CoapBlockOption blockOption);
-
-    public Integer getObserveOption();
-
-    public void setObserveOption(int sequenceNumber);
+//    CoapBlockOption getBlock1();
+//    
+//    void setBlock1(CoapBlockOption blockOption);
+//    
+//    CoapBlockOption getBlock2();
+//    
+//    void setBlock2(CoapBlockOption blockOption);
+//
+//    public Integer getObserveOption();
+//
+//    public void setObserveOption(int sequenceNumber);
 
     public void removeOption(CoapHeaderOptionType optionType); //TODO: could this compromise the internal state?
     

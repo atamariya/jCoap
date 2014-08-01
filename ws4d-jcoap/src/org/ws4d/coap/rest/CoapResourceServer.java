@@ -15,7 +15,6 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.SimpleLayout;
 import org.ws4d.coap.Constants;
 import org.ws4d.coap.connection.BasicCoapChannelManager;
-import org.ws4d.coap.connection.BasicCoapSocketHandler;
 import org.ws4d.coap.interfaces.CoapChannelManager;
 import org.ws4d.coap.interfaces.CoapMessage;
 import org.ws4d.coap.interfaces.CoapRequest;
@@ -178,13 +177,13 @@ public class CoapResourceServer implements CoapServer, ResourceServer {
 				response = channel.createResponse(request, CoapResponseCode.Content_205, resource.getCoapMediaType());
 				response.setPayload(responseValue);
 				
-				if (request.getObserveOption() != null){
-					/*client wants to observe this resource*/
-					if (resource.addObserver(request)){
-						/* successfully added observer */
-						response.setObserveOption(resource.getObserveSequenceNumber());
-					}
-				}
+//				if (request.getObserveOption() != null){
+//					/*client wants to observe this resource*/
+//					if (resource.addObserver(request)){
+//						/* successfully added observer */
+//						response.setObserveOption(resource.getObserveSequenceNumber());
+//					}
+//				}
 				
 			} else {
 				response = channel.createResponse(request, CoapResponseCode.Not_Found_404);
@@ -263,6 +262,11 @@ public class CoapResourceServer implements CoapServer, ResourceServer {
 		} catch (SocketException ex) {
 		}
 		return null;
+	}
+	
+	public static void main(String[] args) throws Exception {
+		CoapResourceServer server = new CoapResourceServer();
+		server.start();
 	}
 
 }

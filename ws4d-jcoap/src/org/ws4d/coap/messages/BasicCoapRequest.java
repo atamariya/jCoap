@@ -20,7 +20,7 @@ public class BasicCoapRequest extends AbstractCoapMessage implements CoapRequest
 	public BasicCoapRequest(byte[] bytes, int length, int offset) {
 		serialize(bytes, length, offset);
 		/* check if request code is valid, this function throws an error in case of an invalid argument */
-		requestCode = CoapRequestCode.parseRequestCode(this.messageCodeValue);
+		requestCode = CoapRequestCode.parseRequestCode(this.code);
 		
 		//TODO: check integrity of header options 
 	}
@@ -30,7 +30,7 @@ public class BasicCoapRequest extends AbstractCoapMessage implements CoapRequest
 
 		this.packetType = packetType;
 		this.requestCode = requestCode;
-		this.messageCodeValue = requestCode.getValue();
+		this.code = requestCode.getValue();
 		this.messageId = messageId;
 	}
 	

@@ -145,7 +145,7 @@ public class BasicCoapServerChannel extends BasicCoapChannel implements CoapServ
 		
 		response = new BasicCoapResponse(packetType, responseCode, channelManager.getNewMessageID(), request.getToken());
 		response.setChannel(this);
-		response.setObserveOption(sequenceNumber);
+//		response.setObserveOption(sequenceNumber);
 		return response;
 	}
 
