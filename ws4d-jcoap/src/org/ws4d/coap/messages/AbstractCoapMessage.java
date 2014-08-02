@@ -207,28 +207,32 @@ public abstract class AbstractCoapMessage implements CoapMessage {
         }
         
         /* allocate memory for the complete packet */
-        int length = HEADER_LENGTH + optionsLength + payloadLength;
+        int length = HEADER_LENGTH + getToken().length + optionsLength;
+        if (payloadLength > 0)
+        	length += payloadLength + 1; // Payload marker
         byte[] serializedPacket = new byte[length];
         
         /* serialize header */
-        serializedPacket[0] = (byte) ((this.version & 0x03) << 6);
-        serializedPacket[0] |= (byte) ((this.packetType.getValue() & 0x03) << 4);
-        serializedPacket[0] |= (byte) (options.getOptionCount() & 0x0F);
-        serializedPacket[1] = (byte) (this.getMessageCodeValue() & 0xFF);
-        serializedPacket[2] = (byte) ((this.messageId >> 8) & 0xFF);
-        serializedPacket[3] = (byte) (this.messageId & 0xFF);
+		serializedPacket[0] = (byte) ((this.version & 0x03) << 6);
+		serializedPacket[0] |= (byte) ((this.packetType.getValue() & 0x03) << 4);
+		serializedPacket[0] |= (byte) (getToken().length & 0x0F);
+		serializedPacket[1] = (byte) (this.getMessageCodeValue() & 0xFF);
+		serializedPacket[2] = (byte) ((this.messageId >> 8) & 0xFF);
+		serializedPacket[3] = (byte) (this.messageId & 0xFF);
+		
+		System.arraycopy(getToken(), 0, serializedPacket, 4, getToken().length);
 
         /* copy serialized options to the final array */
-        int offset = HEADER_LENGTH;
+        int offset = HEADER_LENGTH + getToken().length;
         if (options != null) {
-            for (int i = 0; i < optionsLength; i++)
-                serializedPacket[i + offset] = optionsArray[i];
+        	System.arraycopy(optionsArray, 0, serializedPacket, offset, optionsLength);
         }
         
         /* copy payload to the final array */
-        offset = HEADER_LENGTH + optionsLength; 
-        for (int i = 0; i < this.payloadLength; i++) {
-        	serializedPacket[i + offset] = payload[i];
+        offset += optionsLength; 
+        if (payloadLength > 0) {
+        	serializedPacket[offset++] = (byte) 0xff;
+        	System.arraycopy(payload, 0, serializedPacket, offset, payloadLength);
         }
 
         return serializedPacket;
