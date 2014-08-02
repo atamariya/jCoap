@@ -143,10 +143,12 @@ public class BasicCoapRequest extends AbstractCoapMessage implements CoapRequest
 	
     @Override
     public Vector<String> getUriQuery(){
-    	Vector<String> queryList = new Vector<String>();
+    	Vector<String> queryList = null;
 
     	for (CoapHeaderOption option : options) {
 			if(option.getOptionType() == CoapHeaderOptionType.Uri_Query){
+				if (queryList == null)
+					queryList = new Vector<String>();
 				queryList.add(new String(option.getOptionData()));
 			}
 		}
@@ -271,11 +273,6 @@ public class BasicCoapRequest extends AbstractCoapMessage implements CoapRequest
 		return false;
 	}
 	
-    @Override
-	public String toString() {
-    	return packetType.toString() + ", " + requestCode.toString() + ", MsgId: " + getMessageID() +", #Options: " + options.getOptionCount(); 
-	}
-
     @Override
 	public void setRequestCode(CoapRequestCode requestCode) {
 		this.requestCode = requestCode;

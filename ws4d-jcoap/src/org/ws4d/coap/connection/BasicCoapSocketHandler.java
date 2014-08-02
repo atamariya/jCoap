@@ -197,6 +197,7 @@ public class BasicCoapSocketHandler implements CoapSocketHandler {
 			CoapMessage msg;
 			try {
 				 msg = AbstractCoapMessage.parseMessage(buffer.array(), buffer.position());
+				 System.out.println(msg);
 			} catch (Exception e) {
 				logger.warn("Received invalid message: message dropped!");
 				e.printStackTrace();

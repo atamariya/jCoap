@@ -23,7 +23,7 @@ public class BasicCoapResponse extends AbstractCoapMessage implements CoapRespon
 
 	/* token can be null */
 	public BasicCoapResponse(CoapPacketType packetType, CoapResponseCode responseCode, int messageId, byte[] requestToken){
-		this.version = 1;
+		this.version = COAP_VERSION;
 		
 		this.packetType = packetType;
 		
@@ -99,11 +99,6 @@ public class BasicCoapResponse extends AbstractCoapMessage implements CoapRespon
 		return false;
 	}
 	
-    @Override
-	public String toString() {
-    	return packetType.toString() + ", " + responseCode.toString() + ", MsgId: " + getMessageID() +", #Options: " + options.getOptionCount(); 
-	}
-
     @Override
 	public void setResponseCode(CoapResponseCode responseCode) {
     	if (responseCode != CoapResponseCode.UNKNOWN){

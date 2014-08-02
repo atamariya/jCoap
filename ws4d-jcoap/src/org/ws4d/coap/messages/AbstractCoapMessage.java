@@ -21,6 +21,7 @@
 
 package org.ws4d.coap.messages;
 
+import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.Collections;
@@ -447,6 +448,24 @@ public abstract class AbstractCoapMessage implements CoapMessage {
 		return true;
 	}
 	
+	@Override
+	public String toString() {
+		StringBuilder text = new StringBuilder();
+		text.append(String.format(
+				"Version: %d, Type: %s, TKL: %d, Code: %d, Message Id: %d",
+				getVersion(), getPacketType().name(), getToken().length, getMessageCodeValue(),
+				getMessageID()));
+		text.append(" Tokens:");
+		try {
+			text.append(new String(getToken(), "utf-8"));
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		text.append(options);
+		text.append("Payload length:");
+		text.append(getPayloadLength());
+		return text.toString();
+	}
 	
 	protected static long coapUint2Long(byte[] data){
 		/* avoid buffer overflow */
@@ -619,7 +638,7 @@ public abstract class AbstractCoapMessage implements CoapMessage {
 			/* copy value */
 			deserializedLength = shortLength;
 			optionData = Arrays.copyOfRange(bytes, offset, deserializedLength + offset);
-			System.out.println(new String(optionData));
+//			System.out.println(new String(optionData));
 			
 	    }
 	
